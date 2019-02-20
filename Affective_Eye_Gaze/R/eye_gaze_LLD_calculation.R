@@ -1,8 +1,9 @@
 #### This function calculates the low-level descriptors (LLDs) for eye gaze, namely, whether the eyes are scanning or
 #### fixated, whether the gaze is shortened (approach-oriented gaze) or lengthened (avoidance oriented gaze), and 
-#### the delta (or change) in the x,y eye gaze angles.
+#### the delta (or change) in the x,y eye gaze angles. Eye blink binary and intensity features are also gathered 
+#### here.
 #
-# Copyright: Athlone Institute of Technology, 2018
+# Copyright: Athlone Institute of Technology, 2019
 # Author: j.odwyer@research.ait.ie
 
 calculate_LLDs <- function(mytable) {
@@ -13,11 +14,13 @@ calculate_LLDs <- function(mytable) {
   eye_gaze_approach <- t(rep(1, dim(mytable)[1]))
   
   output_table <- data.table(
-    # 4 x Low-level descriptors (LLD) include eyes fixated, and eyes gaze approach, and delta of gaze x,y angles
-    "eyes_fixated" = 1:dim(mytable)[1],
-    "eye_gaze_approach" = 0,
+    # 6 x Low-level descriptors (LLD) include delta of gaze angles, eyes fixated, eyes gaze approach, and eye blink/intensity
     "delta_gaze_angle_x" = 0.0,
-    "delta_gaze_angle_y" = 0.0
+    "delta_gaze_angle_y" = 0.0,
+    "eye_blink" = 0.0,
+    "eye_blink_intensity_value" = 0.0,
+    "eyes_fixated" = 1:dim(mytable)[1],
+    "eye_gaze_approach" = 0.0
   )
   
   # Gather raw data into vectors
@@ -25,8 +28,6 @@ calculate_LLDs <- function(mytable) {
   gaze_angle_radians_y <- rep(t(mytable[,"gaze_angle_y"][1:dim(mytable)[1]]))
   eye_landmark_Z_8 <- rep(t(mytable[,"eye_lmk_Z_8"][1:dim(mytable)[1]]))
   eye_landmark_Z_42 <- rep(t(mytable[,"eye_lmk_Z_42"][1:dim(mytable)[1]]))
-  gaze_angle_x <- rep(t(mytable[,"gaze_angle_x"][1:dim(mytable)[1]]))
-  gaze_angle_y <- rep(t(mytable[,"gaze_angle_y"][1:dim(mytable)[1]]))
   
   vector_b <- rbind(tail(gaze_angle_radians_x, -1), tail(gaze_angle_radians_y, -1))
   vector_a <- rbind(
@@ -54,14 +55,16 @@ calculate_LLDs <- function(mytable) {
   eye_gaze_approach[delta_gaze_distance < 0] <- 0  # gaze approach or static (=1) or avoidance (=0) determination
   
   # LLD calculation (deltas of raw data). The first delta is 0
-  delta_gaze_angle_x <- c(0,diff(gaze_angle_x))
-  delta_gaze_angle_y <- c(0,diff(gaze_angle_y))
+  delta_gaze_angle_x <- c(0,diff(gaze_angle_radians_x))
+  delta_gaze_angle_y <- c(0,diff(gaze_angle_radians_y))
   
   # write the data to the output results table
-  output_table[,"eyes_fixated"] <- t(eyes_fixated_gaze)
-  output_table[,"eye_gaze_approach"] <- t(eye_gaze_approach)
   output_table[,"delta_gaze_angle_x"] <- delta_gaze_angle_x
   output_table[,"delta_gaze_angle_y"] <- delta_gaze_angle_y
+  output_table[,"eye_blink"] <- rep(t(mytable[,"AU45_c"][1:dim(mytable)[1]]))
+  output_table[,"eye_blink_intensity_value"] <- rep(t(mytable[,"AU45_r"][1:dim(mytable)[1]]))
+  output_table[,"eyes_fixated"] <- t(eyes_fixated_gaze)
+  output_table[,"eye_gaze_approach"] <- t(eye_gaze_approach)
 
   return(output_table)
 
