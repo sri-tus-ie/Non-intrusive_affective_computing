@@ -9,7 +9,7 @@ calculate_features <- function(mytable, fps, feature_calculation_temporal_window
   #### Libraries ####
   library(e1071)                     #  used for kurtosis and skewness calculations
   #### Functions ####
-  source("~/Dropbox/MSc_Jonny_O_Dwyer/RProjects/Affective_Eye_Gaze/R/eye_gaze_LLD_calculation.R") 
+  source("~/YOUR/DIRECTORY/Affective_Eye_Gaze/R/eye_gaze_LLD_calculation.R") 
   
   frames_per_second <- fps
   frame_time_in_seconds <- 1 / frames_per_second
