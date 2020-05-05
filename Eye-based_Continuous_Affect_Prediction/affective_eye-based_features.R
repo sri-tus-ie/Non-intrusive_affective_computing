@@ -31,7 +31,7 @@ for(counter in 1:length(csv_file_list))
                         "gaze_angle_x" = temp$gaze_angle_x, "gaze_angle_y" = temp$gaze_angle_y,
                         "left_pupil_x2" = temp$eye_lmk_X_55, "left_pupil_x1" = temp$eye_lmk_X_51,
                         "left_pupil_y2" = temp$eye_lmk_Y_53, "left_pupil_y1" = temp$eye_lmk_Y_49,
-                        "eye_lmk_Z_8" = temp$eye_lmk_Z_8, "eye_lmk_Z_8" = temp$eye_lmk_Z_42
+                        "eye_lmk_Z_8" = temp$eye_lmk_Z_8, "eye_lmk_Z_42" = temp$eye_lmk_Z_42
                         )
   
   setwd("~/PATH/TO/CSV_OUTPUT_FILES_LOC")  #  Data output directory

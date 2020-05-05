@@ -18,5 +18,5 @@ R package, foreign (0.8.69)	Note: arff file reading from openSMILE output<br />
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
+This project is licensed under the Responsible AI Source Code License - see the [LICENSE](LICENSE) file for details
 
